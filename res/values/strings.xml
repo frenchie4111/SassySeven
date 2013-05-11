@@ -4,5 +4,8 @@
     <string name="app_name">Sassy Seven</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="homeMenuPlayer">Play</string>
+    <string name="homeMenuHelp">Help</string>
+    <string name="homeMenuAboutUs">About Us</string>
 
 </resources>

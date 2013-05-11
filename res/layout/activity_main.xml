@@ -7,7 +7,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/backrepeat"
-    tools:context=".MainActivity" >    
+    tools:context=".MainActivity"
+    android:id="@+id/homeContainer" >    
     <RelativeLayout
         android:layout_width="450dp"
         android:layout_height="450dp"
@@ -58,5 +59,38 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:src="@drawable/title2" />
+    
+	<RelativeLayout
+	    android:id="@+id/homeMenuView"
+	    android:layout_width="match_parent"
+	    android:layout_height="150dp"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true" >
+	
+	    <Button
+	        android:id="@+id/homeMenuPlayButton"
+	        android:layout_width="200dp"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:text="@string/homeMenuPlayer" />
+	    
+	   	<Button
+	   	    android:id="@+id/homeMenuHelpButton"
+	   	    android:layout_width="200dp"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_below="@id/homeMenuPlayButton"
+	   	    android:layout_centerHorizontal="true"
+	   	    android:text="@string/homeMenuHelp" />
+	
+		 <Button
+		     android:id="@+id/homeMenuAboutUsButton"
+		     android:layout_width="200dp"
+		     android:layout_height="wrap_content"
+		     android:layout_below="@id/homeMenuHelpButton"
+		     android:layout_centerHorizontal="true"
+		     android:text="@string/homeMenuAboutUs" />
+	    
+	</RelativeLayout>
     
 </RelativeLayout>

@@ -1,3 +1,8 @@
+/**
+ * PlayActivity
+ * @author Nic Manoogian
+ * @author Mike Lyons
+ */
 package org.mikelyons.sassyseven;
 
 import android.app.Activity;
@@ -39,6 +44,9 @@ public class PlayActivity extends Activity {
 	// Specialized shake sensor listener
 	private final SensorEventListener mSensorListener = new SensorEventListener() {
 
+		/**
+		 * Runs playUpdate when shake is above threshold
+		 */
 		public void onSensorChanged(SensorEvent se) {
 			float x = se.values[0];
 			float y = se.values[1];
@@ -151,6 +159,14 @@ public class PlayActivity extends Activity {
 	    //an.setFillAfter(true);  
 	    
 	    playRotateView.setAnimation(an);
+	}
+	
+	/**
+	 * Slides the top menu text in
+	 */
+	public void slideInSassy()
+	{
+		// TODO slide in sassy
 	}
 	
 }

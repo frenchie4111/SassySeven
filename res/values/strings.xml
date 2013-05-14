@@ -7,5 +7,6 @@
     <string name="homeMenuPlayer">Play</string>
     <string name="homeMenuHelp">Help</string>
     <string name="homeMenuAboutUs">About Us</string>
+    <string name="shakeText">Shake\\nMe!\\n</string>
 
 </resources>

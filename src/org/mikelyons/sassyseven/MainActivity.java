@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
 	ImageView ballBackground;
 	ImageView ballSeven;
 	ImageView ballGlare;
+	ImageView playSassyBanner;
 	
 	// Menu Stuff
 	RelativeLayout homeMenuView;
@@ -44,6 +45,9 @@ public class MainActivity extends Activity {
 		
 		// Container stuff
 		homeContainer = (RelativeLayout) findViewById(R.id.homeContainer);
+		
+		// Header stuff
+		playSassyBanner = (ImageView) findViewById(R.id.sassyBanner);
 		
 		// Ball stuff
 		ballView = (RelativeLayout) findViewById(R.id.homeBallView); // The ball that rolls in
@@ -66,7 +70,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		animateIn();
-		
+//		Log.v("MainActivity", "Resumed");
 		addListeners();
 	}
 	
@@ -76,7 +80,7 @@ public class MainActivity extends Activity {
 	public void animateIn() {
 		rollIn();
 		fadeInMenu();
-		// TODO Slide in Sassy
+		slideInSassy();
 	}
 	
 	/**
@@ -123,6 +127,33 @@ public class MainActivity extends Activity {
 		homeContainer.invalidate(); // Tell it things are changing soon
 		rollOut(r);
 		fadeOutMenu();
+		slideOutSassy();
+	}
+	
+	/**
+	 * Slides the top menu text in
+	 */
+	public void slideInSassy() {
+		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, -0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
+				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
+		
+		translate.setDuration(MainActivity.ANIMATION_DURATION);
+		translate.setRepeatCount(0);
+		translate.setFillAfter(true);
+		playSassyBanner.setAnimation(translate);
+	}
+	
+	/**
+	 * Slides the top menu text out
+	 */
+	public void slideOutSassy() {
+		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, -1.2f,
+				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
+		
+		translate.setDuration(MainActivity.ANIMATION_DURATION);
+		translate.setRepeatCount(0);
+		translate.setFillAfter(true);
+		playSassyBanner.setAnimation(translate);
 	}
 	
 	/**

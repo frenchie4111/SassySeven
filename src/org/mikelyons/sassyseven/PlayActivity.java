@@ -14,9 +14,12 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +29,6 @@ public class PlayActivity extends Activity {
 	// View, container, and text
 	RelativeLayout playBallContainer;
 	RelativeLayout playRotateView;
-	ImageView playSassyBanner;
 	TextView playText;
 	// Model
 	private SassySevenModel model;
@@ -106,7 +108,6 @@ public class PlayActivity extends Activity {
 		playBallContainer = (RelativeLayout) findViewById(R.id.playBallViewContainer);
 		playRotateView = (RelativeLayout) findViewById(R.id.playRotateContainer);
 		playText = (TextView) findViewById(R.id.playTextField);
-		playSassyBanner = (ImageView) findViewById(R.id.sassyBanner);
 		
 		// Set sensors and services
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -136,45 +137,65 @@ public class PlayActivity extends Activity {
 	 * Calls the functions to animate in
 	 */
 	public void animateIn() {
-		rollIn();
-		slideInSassy();
+		fadeIn();
 	}
 	
 	/**
-	 * Rolls the ball in (Home Menu Animation)
+	 * Fades the ball in (Home Menu Animation)
 	 */
-	public void rollIn() {
-		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
-				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
+	public void fadeIn() {
+		Animation an = new AlphaAnimation( 0,1 );
+		an.setDuration(MainActivity.ANIMATION_DURATION);
+		an.setFillAfter(true);
 		
-		translate.setDuration(MainActivity.ANIMATION_DURATION);
-		translate.setRepeatCount(0);
-		//translate.setFillAfter(true);
-		playBallContainer.setAnimation(translate);
-		
-	    // Create an animation instance
-	    Animation an = new RotateAnimation(360.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-	    // Set the animation's parameters
-	    an.setDuration(MainActivity.ANIMATION_DURATION);               // duration in ms
-	    an.setRepeatCount(0);                // -1 = infinite repeated
-	    an.setRepeatMode(Animation.REVERSE); // reverses each repeat
-	    //an.setFillAfter(true);  
-	    
-	    playRotateView.setAnimation(an);
+		playBallContainer.setAnimation(an);
 	}
 	
 	/**
-	 * Slides the top menu text in
+	 * Fades the ball out
+	 * @param r Called after animation has finished
 	 */
-	public void slideInSassy()
+	public void fadeOut(final Runnable r)
 	{
-		// TODO slide in sassy
-		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
-				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
+		Log.v("Ball", "Fading out");
+		Animation an = new AlphaAnimation( 1,0 );
+		an.setDuration(MainActivity.ANIMATION_DURATION);
+		an.setFillAfter(true);
 		
-		translate.setDuration(MainActivity.ANIMATION_DURATION);
-		translate.setRepeatCount(0);
-		playSassyBanner.setAnimation(translate);
+		playBallContainer.setAnimation(an);
+//		Log.v("Ball", "Finished fade");
+
+		an.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				r.run();
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {}
+			@Override
+			public void onAnimationStart(Animation animation) {}
+	    });
+		
 	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			Log.v("Button", "Back Pressed");
+			fadeOut(new Runnable(){
+
+				@Override
+				public void run() {
+					Log.v("Activity", "Trying to close");
+					finish();
+				}
+				
+			});
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
 }

@@ -13,22 +13,32 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class PlayActivity extends Activity {
 	
+	// View, container, and text
 	RelativeLayout playBallContainer;
-	
 	RelativeLayout playRotateView;
+	TextView playText;
 	// Sensor manager
 	private SensorManager mSensorManager;
 	// Array of sounds
 	private final int[] sounds = { R.raw.allihear1, R.raw.allihear2, R.raw.allihear3, R.raw.answerdat1, R.raw.answerdat2, R.raw.answerdat3, R.raw.areyoustupid1, R.raw.areyoustupid2, R.raw.biggirlpanties1, R.raw.franklymydear1, R.raw.franklymydear2, R.raw.franklymydear3, R.raw.franklymydear4, R.raw.girldonteven1, R.raw.girldonteven2, R.raw.girldonteven3, R.raw.girldonteven4, R.raw.givesadamn1, R.raw.givesadamn2, R.raw.hellno1, R.raw.hellno2, R.raw.hellno3, R.raw.hellno4, R.raw.ignoreyoulater1, R.raw.ignoreyoulater2, R.raw.ignoreyoulater3, R.raw.ignoreyoulater4, R.raw.liketoagree1, R.raw.liketoagree2, R.raw.mmgirl1, R.raw.nobodygottime1, R.raw.nobodygottime2, R.raw.nobodygottime3, R.raw.ohnoyoudidnt1, R.raw.ohnoyoudidnt2, R.raw.ohnoyoudidnt3, R.raw.ringonit1, R.raw.ringonit2, R.raw.sayingsomething1, R.raw.sayingsomething2, R.raw.sayingsomething3, R.raw.shutyomouth1, R.raw.whatno1, R.raw.whatno2, R.raw.whatno3, R.raw.whatwhatwhat1};
+	// Array of phrases
+	private final String[] phrases = {"All I Hear Is\nBuzzing\n\n", "All I Hear Is\nBuzzing\n\n", "All I Hear Is\nBuzzing\n\n", "I'm ain't gonna answer that"}; // TODO Write all of these phrases with formatting
 	// Media Player
 	private static MediaPlayer mp;
-	private float mAccel; // acceleration apart from gravity
-	private float mAccelCurrent; // current acceleration including gravity
-	private float mAccelLast; // last acceleration including gravity
+	// acceleration apart from gravity
+	private float mAccel;
+	// current acceleration including gravity
+	private float mAccelCurrent;
+	// last acceleration including gravity
+	private float mAccelLast;
+	// Shake threshold
+	private static final int SHAKE_THRESHOLD = 2;
 
+	// Specialized shake sensor listener
 	private final SensorEventListener mSensorListener = new SensorEventListener() {
 
 		public void onSensorChanged(SensorEvent se) {
@@ -40,7 +50,8 @@ public class PlayActivity extends Activity {
 			float delta = mAccelCurrent - mAccelLast;
 			mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 			
-			if (mAccel > 2)
+			// If acceleration is
+			if (mAccel > SHAKE_THRESHOLD)
 			{
 				Log.v(SENSOR_SERVICE, "Phone shook");
 				playUpdate();
@@ -57,12 +68,17 @@ public class PlayActivity extends Activity {
 	
 	/**
 	 * Chooses and plays a random sound
+	 * Updates the play text
 	 */
 	public void playUpdate() {
 		if (!mp.isPlaying()) {
-			int selection = (int)(Math.random()*sounds.length); 
+			// Select phrase
+			int selection = (int)(Math.random()*sounds.length);
+			// Play Sounds
 			mp = MediaPlayer.create(this, sounds[selection]);
 			mp.start();
+			// Update text
+			playText.setText(phrases[0]);
 		}
 	}
 
@@ -78,9 +94,10 @@ public class PlayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play);
 		
-		// Set container and view
+		// Set container, view, and text
 		playBallContainer = (RelativeLayout) findViewById(R.id.playBallViewContainer);
 		playRotateView = (RelativeLayout) findViewById(R.id.playRotateContainer);
+		playText = (TextView) findViewById(R.id.playTextField);
 		
 		// Set sensors and services
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class PlayActivity extends Activity {
 	// View, container, and text
 	RelativeLayout playBallContainer;
 	RelativeLayout playRotateView;
+	ImageView playSassyBanner;
 	TextView playText;
 	// Model
 	private SassySevenModel model;
@@ -104,6 +106,7 @@ public class PlayActivity extends Activity {
 		playBallContainer = (RelativeLayout) findViewById(R.id.playBallViewContainer);
 		playRotateView = (RelativeLayout) findViewById(R.id.playRotateContainer);
 		playText = (TextView) findViewById(R.id.playTextField);
+		playSassyBanner = (ImageView) findViewById(R.id.sassyBanner);
 		
 		// Set sensors and services
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -134,7 +137,7 @@ public class PlayActivity extends Activity {
 	 */
 	public void animateIn() {
 		rollIn();
-		// TODO Slide in Sassy
+		slideInSassy();
 	}
 	
 	/**
@@ -167,6 +170,11 @@ public class PlayActivity extends Activity {
 	public void slideInSassy()
 	{
 		// TODO slide in sassy
+		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
+				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
+		
+		translate.setDuration(MainActivity.ANIMATION_DURATION);
+		translate.setRepeatCount(0);
+		playSassyBanner.setAnimation(translate);
 	}
-	
 }

@@ -42,14 +42,14 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		// Contianer stuff
+		// Container stuff
 		homeContainer = (RelativeLayout) findViewById(R.id.homeContainer);
 		
 		// Ball stuff
 		ballView = (RelativeLayout) findViewById(R.id.homeBallView); // The ball that rolls in
 		
 		ballBackground = (ImageView) findViewById(R.id.homeBallBackground); // The pink part of the ball
-		ballSeven = (ImageView) findViewById(R.id.homeBallSeven); // The seven in the front of th ball
+		ballSeven = (ImageView) findViewById(R.id.homeBallSeven); // The seven in the front of the ball
 		ballGlare = (ImageView) findViewById(R.id.homeBallGlare); // The glare of the ball
 		
 		// Menu stuff

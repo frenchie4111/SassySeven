@@ -13,38 +13,20 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true"
 	    android:id="@+id/playBallViewContainer" >
-
-	    <ImageView
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        
-	        android:scaleType="centerCrop"
-	        android:src="@drawable/ball2" />
 	    
 	    <ImageView
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_alignParentTop="true"
-	        
-	        android:scaleType="centerCrop"
-	        android:src="@drawable/glare3" />
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/blackback" />
 
 	    <RelativeLayout
 	        android:id="@+id/centerView"
 	        android:layout_width="325dp"
 	        android:layout_height="325dp"
 	        android:layout_centerInParent="true" >
-
-	        <ImageView
-	            android:id="@+id/imageView1"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:layout_centerInParent="true"
-	            android:layout_margin="10dp"
-	            android:src="@drawable/blackback" />
 
 	        <RelativeLayout
 	            android:id="@+id/playRotateContainer"
@@ -58,7 +40,8 @@
 	                android:layout_width="match_parent"
 	                android:layout_height="match_parent"
 	                android:layout_centerInParent="true"
-	                android:src="@drawable/triangle" />
+	                android:src="@drawable/triangle"
+	                android:id="@+id/playTriangle" />
 
 	            <TextView
 	                android:id="@+id/playTextField"
@@ -73,16 +56,23 @@
 	                android:textSize="30dp" />
 
 	        </RelativeLayout>
-
-	        <ImageView
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:layout_centerInParent="true"
-	            android:src="@drawable/back2" />
+	        
+	       	<ImageView
+	            android:id="@+id/playBubble"
+	            android:layout_width="50dp"
+	            android:layout_height="50dp"
+	            android:src="@drawable/bubble1" />
 
 	    </RelativeLayout>
 	    
-	    
+		<ImageView
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        
+	        android:scaleType="centerCrop"
+	        android:src="@drawable/holyballwithrim" />	    
 	    
 	</RelativeLayout>
 	

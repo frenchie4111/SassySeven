@@ -38,6 +38,8 @@ public class MainActivity extends Activity {
 	Button homeMenuHelp;
 	Button homeMenuAboutUs;
 	
+	private boolean animating;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +88,8 @@ public class MainActivity extends Activity {
 	 * Rolls the ball in (Home Menu Animation)
 	 */
 	public void rollIn() {
+		ballSeven.clearAnimation();
+		
 		Log.v("MainActivity", "Rolling the ball in");
 		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
 				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
@@ -111,6 +115,8 @@ public class MainActivity extends Activity {
 	 * Fades the menu view in (Home Menu Animation)
 	 */
 	public void fadeInMenu() {
+		homeMenuView.clearAnimation();		
+		
 		Animation an = new AlphaAnimation( 0.0f, 1.0f );
 		an.setDuration(ANIMATION_DURATION);
 		//an.setFillAfter(true);
@@ -134,6 +140,8 @@ public class MainActivity extends Activity {
 	 * Slides the top menu text in
 	 */
 	public void slideInSassy() {
+		playSassyBanner.clearAnimation();
+		
 		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, -0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
 				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
 		
@@ -147,6 +155,8 @@ public class MainActivity extends Activity {
 	 * Slides the top menu text out
 	 */
 	public void slideOutSassy() {
+		playSassyBanner.clearAnimation();
+		
 		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, -1.2f,
 				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
 		
@@ -160,6 +170,8 @@ public class MainActivity extends Activity {
 	 * Rolls ball out (Transformers)
 	 */
 	public void rollOut(final Runnable r) {
+		ballView.clearAnimation();
+		
 		Log.v("Menu","Rolling out");
 		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.RELATIVE_TO_SELF, 0.8f,
 				TranslateAnimation.RELATIVE_TO_SELF, 0.0f, TranslateAnimation.RELATIVE_TO_SELF, 0);
@@ -214,15 +226,18 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Log.v("Menu","Play clicked");
-				animateOut(new Runnable() {
-					@Override
-					public void run() {
-						Intent i = new Intent(MainActivity.this, PlayActivity.class);
-						i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-						startActivity(i);
-					}
-				}); // This animates it out and the runnable starts the PlayActity when the animation finishes 
-				
+				if( !animating ) {
+					animating = true;
+					animateOut(new Runnable() {
+						@Override
+						public void run() {
+							Intent i = new Intent(MainActivity.this, PlayActivity.class);
+							i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+							startActivity(i);
+							animating = false;
+						}
+					}); // This animates it out and the runnable starts the PlayActity when the animation finishes 
+				}
 			}
 		});
 		
@@ -249,5 +264,4 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }

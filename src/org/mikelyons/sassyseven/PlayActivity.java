@@ -15,21 +15,27 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class PlayActivity extends Activity {
 	
-	// View, container, and text
+	public static int ANIMATION_DURATION = 500;
+	
+	// View, center, container, text, triangle
 	RelativeLayout playBallContainer;
+	RelativeLayout playCenterView;
 	RelativeLayout playRotateView;
 	TextView playText;
+	ImageView playTriangle;
+	ImageView bubble;
 	// Model
 	private SassySevenModel model;
 	// Sensor manager
@@ -44,10 +50,49 @@ public class PlayActivity extends Activity {
 	private float mAccelLast;
 	// Shake threshold
 	private static final int SHAKE_THRESHOLD = 2;
+	
+	float bubble_tx = -1;
+	float bubble_ty = -1;
+	boolean animating = false;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_play);
+		
+		// Set container, view, and text
+		playBallContainer = (RelativeLayout) findViewById(R.id.playBallViewContainer);
+		playCenterView = (RelativeLayout) findViewById(R.id.centerView);
+ 		playRotateView = (RelativeLayout) findViewById(R.id.playRotateContainer);
+		playText = (TextView) findViewById(R.id.playTextField);
+		playTriangle = (ImageView) findViewById(R.id.playTriangle);
+		bubble = (ImageView) findViewById(R.id.playBubble);
+		
+		// Set sensors and services
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+	    mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+	    
+	    // Set acceleration variables
+	    mAccel = 0.00f;
+	    mAccelCurrent = SensorManager.GRAVITY_EARTH;
+	    mAccelLast = SensorManager.GRAVITY_EARTH;
+	    
+	    // Initialize media player
+	    mp = new MediaPlayer();
+	    
+	    // Initialize model
+	    model = new SassySevenModel();
+	    
+	    playTriangle.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				playUpdate();
+			}
+	    });
+	}
+	
 	// Specialized shake sensor listener
 	private final SensorEventListener mSensorListener = new SensorEventListener() {
-
 		/**
 		 * Runs playUpdate when shake is above threshold
 		 */
@@ -66,6 +111,8 @@ public class PlayActivity extends Activity {
 				Log.v(SENSOR_SERVICE, "Phone shook");
 				playUpdate();
 			}
+			
+			bubbleUpdate(x,y);
 		}
 
 		@Override
@@ -75,6 +122,57 @@ public class PlayActivity extends Activity {
 
 	};
 	
+	public void bubbleUpdate( float x, float y ) {
+		// Calculate the position of the bubble based on the acceleration of the phone
+		bubble_tx = (int)((x/10)*(playCenterView.getWidth()/2) + playCenterView.getWidth()/2);
+		bubble_ty = (int)playCenterView.getHeight() - (int)((y/10)*(playCenterView.getHeight()/2) + playCenterView.getHeight()/2);
+		
+		if( !animating ) {
+			animating = true;
+			Animation move = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_PARENT, bubble_tx,
+					TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_PARENT, bubble_ty );
+			
+			Log.v("Starting at: ", "x: " + bubble.getX());
+			Log.v("Going to: ", "x: " + bubble_tx );
+			
+			final float current_tx = bubble_tx;
+			final float current_ty = bubble_ty;
+			
+			move.setDuration(10000);
+			
+			move.setAnimationListener(new AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+					// TODO Auto-generated method stub
+				}
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+					// TODO Auto-generated method stub
+				}
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					setBubbleMargins( (int) current_tx, (int) current_ty );
+					animating = false;
+				}
+			});
+			
+			move.setFillAfter(true);
+			
+			bubble.clearAnimation();
+			bubble.setAnimation(move);
+		}
+	}
+	
+	public void setBubbleMargins( int x, int y ) {
+		RelativeLayout.LayoutParams lp = (bubble.getLayoutParams() == null)? 
+						new RelativeLayout.LayoutParams(bubble.getWidth(), bubble.getHeight()): 
+						(RelativeLayout.LayoutParams)bubble.getLayoutParams();
+		
+		lp.setMargins(x, y, 0, 0);
+		
+		bubble.setLayoutParams(lp);
+		playCenterView.invalidate();
+	}
 	
 	/**
 	 * Chooses and plays a random sound
@@ -83,46 +181,42 @@ public class PlayActivity extends Activity {
 	public void playUpdate() {
 		if (!mp.isPlaying()) {
 			// Get the phrase
-			String phrase = model.getRandomPhrase();
+			final String phrase = model.getRandomPhrase();
 			// Play Sounds
 			mp = MediaPlayer.create(this, model.getSound(phrase));
 			mp.start();
-			// Update text
-			playText.setText(phrase);
+			
+			// Fade out/in triangle
+			Animation fadeOut = new AlphaAnimation(1, 0);
+			fadeOut.setDuration(PlayActivity.ANIMATION_DURATION);
+			
+			fadeOut.setAnimationListener(new AnimationListener() {
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					// Update text
+					playText.setText(phrase);
+					
+					// Fade back in
+					Animation fadeIn = new AlphaAnimation(0,1);
+					fadeIn.setDuration(PlayActivity.ANIMATION_DURATION);
+					
+					playRotateView.clearAnimation();
+					playRotateView.setAnimation(fadeIn);
+				}
+				@Override
+				public void onAnimationRepeat(Animation animation) {}
+				@Override
+				public void onAnimationStart(Animation animation) {}
+			});
+			playRotateView.clearAnimation();
+			playRotateView.setAnimation(fadeOut);
 		}
 	}
-
 
 	@Override
 	protected void onPause() {
 		mSensorManager.unregisterListener(mSensorListener);
 		super.onPause();
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_play);
-		
-		// Set container, view, and text
-		playBallContainer = (RelativeLayout) findViewById(R.id.playBallViewContainer);
-		playRotateView = (RelativeLayout) findViewById(R.id.playRotateContainer);
-		playText = (TextView) findViewById(R.id.playTextField);
-		
-		// Set sensors and services
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-	    mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
-	    
-	    // Set acceleration variables
-	    mAccel = 0.00f;
-	    mAccelCurrent = SensorManager.GRAVITY_EARTH;
-	    mAccelLast = SensorManager.GRAVITY_EARTH;
-	    
-	    // Initialize media player
-	    mp = new MediaPlayer();
-	    
-	    // Initialize model
-	    model = new SassySevenModel();
 	}
 	
 	@Override
@@ -144,8 +238,10 @@ public class PlayActivity extends Activity {
 	 * Fades the ball in (Home Menu Animation)
 	 */
 	public void fadeIn() {
+		playBallContainer.clearAnimation();
+		
 		Animation an = new AlphaAnimation( 0,1 );
-		an.setDuration(MainActivity.ANIMATION_DURATION);
+		an.setDuration(PlayActivity.ANIMATION_DURATION);
 //		an.setFillAfter(true);
 		
 		playBallContainer.setAnimation(an);
@@ -157,14 +253,15 @@ public class PlayActivity extends Activity {
 	 */
 	public void fadeOut(final Runnable r)
 	{
+		playBallContainer.clearAnimation();
+		
 		Log.v("Ball", "Fading out");
 		Animation an = new AlphaAnimation( 1,0 );
-		an.setDuration(MainActivity.ANIMATION_DURATION);
+		an.setDuration(PlayActivity.ANIMATION_DURATION);
 		an.setFillAfter(true);
 		
 		playBallContainer.setAnimation(an);
 //		Log.v("Ball", "Finished fade");
-		r.run();
 		an.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
@@ -188,7 +285,8 @@ public class PlayActivity extends Activity {
 
 				@Override
 				public void run() {
-					finish();
+					finish(); // Ends activity
+					overridePendingTransition(0, 0); // Stops closing animation
 				}
 				
 			});

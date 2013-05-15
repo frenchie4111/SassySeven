@@ -245,8 +245,20 @@ public class MainActivity extends Activity {
 		homeMenuHelp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(MainActivity.this, HelpActivity.class);
-				startActivity(i);
+//				Intent i = new Intent(MainActivity.this, HelpActivity.class);
+//				startActivity(i);
+				if( !animating ) {
+					animating = true;
+					animateOut(new Runnable() {
+						@Override
+						public void run() {
+							Intent i = new Intent(MainActivity.this, HelpActivity.class);
+							i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+							startActivity(i);
+							animating = false;
+						}
+					}); // This animates it out and the runnable starts the PlayActity when the animation finishes 
+				}
 			}
 		});
 		
@@ -254,8 +266,20 @@ public class MainActivity extends Activity {
 		homeMenuAboutUs.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(MainActivity.this, AboutActivity.class);
-				startActivity(i);
+//				Intent i = new Intent(MainActivity.this, AboutActivity.class);
+//				startActivity(i);
+				if( !animating ) {
+					animating = true;
+					animateOut(new Runnable() {
+						@Override
+						public void run() {
+							Intent i = new Intent(MainActivity.this, AboutActivity.class);
+							i.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+							startActivity(i);
+							animating = false;
+						}
+					}); // This animates it out and the runnable starts the PlayActity when the animation finishes 
+				}
 			}
 		});
 	}

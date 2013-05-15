@@ -146,7 +146,7 @@ public class PlayActivity extends Activity {
 	public void fadeIn() {
 		Animation an = new AlphaAnimation( 0,1 );
 		an.setDuration(MainActivity.ANIMATION_DURATION);
-		an.setFillAfter(true);
+//		an.setFillAfter(true);
 		
 		playBallContainer.setAnimation(an);
 	}
@@ -164,7 +164,7 @@ public class PlayActivity extends Activity {
 		
 		playBallContainer.setAnimation(an);
 //		Log.v("Ball", "Finished fade");
-
+		r.run();
 		an.setAnimationListener(new AnimationListener() {
 			@Override
 			public void onAnimationEnd(Animation animation) {
@@ -188,7 +188,6 @@ public class PlayActivity extends Activity {
 
 				@Override
 				public void run() {
-					Log.v("Activity", "Trying to close");
 					finish();
 				}
 				

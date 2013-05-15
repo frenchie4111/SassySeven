@@ -70,7 +70,6 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		animateIn();
-//		Log.v("MainActivity", "Resumed");
 		addListeners();
 	}
 	
@@ -87,6 +86,7 @@ public class MainActivity extends Activity {
 	 * Rolls the ball in (Home Menu Animation)
 	 */
 	public void rollIn() {
+		Log.v("MainActivity", "Rolling the ball in");
 		Animation translate = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0.8f, TranslateAnimation.RELATIVE_TO_SELF, 0,
 				TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_SELF, 0);
 		

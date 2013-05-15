@@ -7,6 +7,10 @@
     <string name="homeMenuPlayer">Play</string>
     <string name="homeMenuHelp">Help</string>
     <string name="homeMenuAboutUs">About Us</string>
-    <string name="shakeText">Shake\\nMe!\\n</string>
+    <string name="title_activity_help">Help</string>
+    <string name="title_activity_about">About Us</string>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    
 
 </resources>

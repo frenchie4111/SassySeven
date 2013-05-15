@@ -26,6 +26,14 @@
         <activity
             android:name="org.mikelyons.sassyseven.PlayActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="org.mikelyons.sassyseven.HelpActivity"
+            android:label="@string/title_activity_help" >
+        </activity>
+        <activity
+            android:name="org.mikelyons.sassyseven.AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>

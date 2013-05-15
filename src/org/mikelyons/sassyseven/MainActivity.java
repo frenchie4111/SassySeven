@@ -245,7 +245,8 @@ public class MainActivity extends Activity {
 		homeMenuHelp.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				Intent i = new Intent(MainActivity.this, HelpActivity.class);
+				startActivity(i);
 			}
 		});
 		
@@ -253,7 +254,8 @@ public class MainActivity extends Activity {
 		homeMenuAboutUs.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+				Intent i = new Intent(MainActivity.this, AboutActivity.class);
+				startActivity(i);
 			}
 		});
 	}

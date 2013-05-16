@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:text="This app was created for the OSX Challenge."
+        android:text="The Team:\n\n\t\tMike Lyons - Programmer\n\n\t\tNic Manoogian - Programmer\n\n\t\tRenée Hodenfield - Artist\n\nSpecial Thanks:\n\n\t\tJohnathan McCoy - Voice Actor\n\n\t\tAye Chan Pyi Moe - Equiptment\n\t\tSupplier\n\n\t\tGrace - Talent Scout\n\n\t\tMyke and his team at Apple."
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
 </RelativeLayout>

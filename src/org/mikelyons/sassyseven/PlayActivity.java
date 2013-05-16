@@ -126,41 +126,64 @@ public class PlayActivity extends Activity {
 		// Calculate the position of the bubble based on the acceleration of the phone
 		bubble_tx = (int)((x/10)*(playCenterView.getWidth()/2) + playCenterView.getWidth()/2);
 		bubble_ty = (int)playCenterView.getHeight() - (int)((y/10)*(playCenterView.getHeight()/2) + playCenterView.getHeight()/2);
-		
-		if( !animating ) {
-			animating = true;
-			Animation move = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_PARENT, bubble_tx,
-					TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_PARENT, bubble_ty );
+//		if( !animating ) {
+//			animating = true;
+//			Animation move = new TranslateAnimation( TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_PARENT, bubble_tx,
+//					TranslateAnimation.RELATIVE_TO_SELF, 0, TranslateAnimation.RELATIVE_TO_PARENT, bubble_ty );
 			
-			Log.v("Starting at: ", "x: " + bubble.getX());
-			Log.v("Going to: ", "x: " + bubble_tx );
+//			Log.v("Starting at: ", "x: " + bubble.getX());
+//			Log.v("Going to: ", "x: " + bubble_tx );
+//			
+//			final float current_tx = bubble_tx;
+//			final float current_ty = bubble_ty;
 			
-			final float current_tx = bubble_tx;
-			final float current_ty = bubble_ty;
+//			move.setDuration(100);
 			
-			move.setDuration(10000);
+//			move.setAnimationListener(new AnimationListener() {
+//				@Override
+//				public void onAnimationStart(Animation animation) {
+//					// TODO Auto-generated method stub
+//				}
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {
+//					// TODO Auto-generated method stub
+//				}
+//				@Override
+//				public void onAnimationEnd(Animation animation) {
+					int tryx = (int)bubble.getX();
+					int tryy = (int)bubble.getY();
+					int JUMPX = Math.abs(tryx - (int)bubble_tx)/20;
+					int JUMPY = Math.abs(tryy - (int)bubble_ty)/20;
+//					Log.v(JUMPX+"", JUMPY+"");
+					
+					if (tryx - JUMPX > bubble_tx)
+					{
+						tryx-=JUMPX;
+					}
+					else if (tryx + JUMPX < bubble_tx)
+					{
+						tryx+=JUMPX;
+					}
+					if (tryy - JUMPY> bubble_ty)
+					{
+						tryy-=JUMPY;
+					}
+					else if (tryy + JUMPY< bubble_ty)
+					{
+						tryy+=JUMPY;
+					}
+
+					setBubbleMargins(tryx, tryy);
+//					setBubbleMargins( (int) current_tx, (int) current_ty );
+//					animating = false;
+//				}
+//			});
 			
-			move.setAnimationListener(new AnimationListener() {
-				@Override
-				public void onAnimationStart(Animation animation) {
-					// TODO Auto-generated method stub
-				}
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// TODO Auto-generated method stub
-				}
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					setBubbleMargins( (int) current_tx, (int) current_ty );
-					animating = false;
-				}
-			});
+			//move.setFillAfter(true);
 			
-			move.setFillAfter(true);
-			
-			bubble.clearAnimation();
-			bubble.setAnimation(move);
-		}
+//			bubble.clearAnimation();
+//			bubble.setAnimation(move);
+//		}
 	}
 	
 	public void setBubbleMargins( int x, int y ) {

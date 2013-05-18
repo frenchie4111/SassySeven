@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar" >
         <activity
-            android:name="org.mikelyons.sassyseven.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -24,14 +24,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.mikelyons.sassyseven.PlayActivity"
+            android:name=".PlayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="org.mikelyons.sassyseven.HelpActivity"
+            android:name=".HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
         <activity
-            android:name="org.mikelyons.sassyseven.AboutActivity"
+            android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
     </application>

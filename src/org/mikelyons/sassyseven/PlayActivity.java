@@ -7,6 +7,8 @@ package org.mikelyons.sassyseven;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -34,6 +36,8 @@ public class PlayActivity extends Activity {
 	RelativeLayout playCenterView;
 	RelativeLayout playRotateView;
 	TextView playText;
+	// Image Views
+	ImageView holyBallWithTrim;
 	ImageView playTriangle;
 	ImageView bubble;
 	// Model
@@ -65,8 +69,15 @@ public class PlayActivity extends Activity {
 		playCenterView = (RelativeLayout) findViewById(R.id.centerView);
  		playRotateView = (RelativeLayout) findViewById(R.id.playRotateContainer);
 		playText = (TextView) findViewById(R.id.playTextField);
+		
+		//Image Views
+		holyBallWithTrim = (ImageView) findViewById(R.id.holyballwithtrim);
 		playTriangle = (ImageView) findViewById(R.id.playTriangle);
 		bubble = (ImageView) findViewById(R.id.playBubble);
+		
+		// Load Images
+		//holyBallWithTrim.setImageBitmap(decodeFile( R.drawable.holyballwithrim, holyBallWithTrim.getWidth(), holyBallWithTrim.getHeight() ));
+		//bubble.setImageBitmap( decodeFile( R.drawable.bubble1, bubble.getWidth(), bubble.getHeight() ) );
 		
 		// Set sensors and services
 		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -121,6 +132,37 @@ public class PlayActivity extends Activity {
 		}
 
 	};
+	
+	//decodes image and scales it to reduce memory consumption
+	private Bitmap decodeFile(int res, int height, int width){
+		BitmapFactory.Options options=new BitmapFactory.Options();
+		options.outHeight = 500;
+		options.outWidth = 500;
+		options.inSampleSize = calculateInSampleSize(options, height, width );
+		return BitmapFactory.decodeResource(getResources(), res, options);
+	}
+	
+	public static int calculateInSampleSize(
+			BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			// Calculate ratios of height and width to requested height and width
+			final int heightRatio = Math.round((float) height / (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+			// Choose the smallest ratio as inSampleSize value, this will guarantee
+			// a final image with both dimensions larger than or equal to the
+			// requested height and width.
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+		}
+
+		return inSampleSize;
+	}
 	
 	public void bubbleUpdate( float x, float y ) {
 		// Calculate the position of the bubble based on the acceleration of the phone

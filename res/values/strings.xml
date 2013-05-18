@@ -11,6 +11,7 @@
     <string name="title_activity_about">About Us</string>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <string name="about_us_content">The Team:\\n\\n\\t\\tMike Lyons - Programmer\\n\\n\\t\\tNic Manoogian - Programmer\\n\\n\\t\\tRenée Hodenfield - Artist\\n\\nSpecial Thanks:\\n\\n\\t\\tJohnathan McCoy - Voice Actor\\n\\n\\t\\tAye Chan Pyi Moe - Equiptment\\n\\t\\tSupplier\\n\\n\\t\\tGrace - Talent Scout\\n\\n\\t\\tMyke and his team at Apple.</string>
     
 
 </resources>
